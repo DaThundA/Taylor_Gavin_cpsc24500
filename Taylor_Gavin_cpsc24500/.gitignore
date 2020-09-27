@@ -1,0 +1,30 @@
+#project specific excludes
+#
+tomcat
+#
+#Binaries
+*.7z
+*.dng
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.sar
+*.class
+#Maven
+target/
+#Intellij project files
+*.inl
+*>iws
+*.ipr
+.idea/
+#eclipse project files
+.setting/
+.classpath
+.project
+
+

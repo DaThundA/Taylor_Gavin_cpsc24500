@@ -1,41 +1,113 @@
-import java.io.BufferedWriter;
+import java.beans.XMLDecoder;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
-
-public class TileWriter {
-	public boolean writeToText(String fname, ArrayList<Tile> tiles) {
+import java.util.Scanner;
+/**
+ * This reads the data that was written in TileWriter.java.
+ * @author gavin
+ *
+ */
+public class TileRead {
+	public ArrayList<Tile> readFromText(String fname){
 		File f = new File(fname);
-		return writeToText(f, tiles);
+		return readFromText(f);
 	}
-	public boolean writeToText(File f, ArrayList<Tile> tiles) {
+	/**
+	 * This reads the TXT file option
+	 * @param f
+	 * @return
+	 */
+	public ArrayList<Tile> readFromText(File f){
 		try {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-			for (Tile tile : tiles) {
-				pw.println(tile);
+			ArrayList<Tile> result = new ArrayList<Tile>();
+			Scanner fsc = new Scanner(f);
+			String line;
+			String[] parts;
+			Tile tile;
+			int color, shape, posX, posY;
+			while (fsc.hasNextLine()) {
+				line = fsc.nextLine().trim();
+				if (line.length() > 0) {
+					parts = line.split(" ");
+					color = Integer.parseInt(parts[0]);
+					shape = Integer.parseInt(parts[1]);
+					posX = Integer.parseInt(parts[2]);
+					posY = Integer.parseInt(parts[3]);
+					tile = new Tile(shape, color, posX, posY);
+					result.add(tile);
+				}
 			}
-			pw.close();
-			return true;
+			fsc.close();
+			return result;
 		}catch (Exception ex) {
 			ex.printStackTrace();
-			return false;
+			return null;
 		}
 	}
-	public boolean writeToBinary(String fname, ArrayList<Tile> tiles) {
+	public ArrayList<Tile> readFromBinary(String fname){
 		File f = new File(fname);
-		return writeToBinary(f, tiles);
+		return readFromBinary(f);
 	}
-	public boolean writeToBinary(File f, Arraylist<Tile> tiles) {
+	/**
+	 * This read the BIN option
+	 * @param f
+	 * @return
+	 */
+	public ArrayList<Tile> readFromBinary(File f){
 		try {
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutpviutStream(f));
-			oos.writeObject(tiles);
-			oos.close();
-			return true;
+			ArrayList<Tile> tilesRead;
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+			tilesRead = (ArrayList<Tile>)ois.readObject();
+			ois.close();
+			return tilesRead;
 		}catch (Exception ex) {
-			return false;
+			return null;
 		}
+	}
+	public ArrayList<Tile> readFromXML(String fname){
+		File f = new File(fname);
+		return readFromXML(f);
+	}
+	/**
+	 * This reads the XML option
+	 * @param f
+	 * @return
+	 */
+	public ArrayList<Tile> readFromXML(File f){
+		try {
+			ArrayList<Tile> tilesRead;
+			XMLDecoder dec = new XMLDecoder(new BufferedInputStream(new FileInputStream(f)));
+			tilesRead = (ArrayList<Tile>) dec.readObject();
+			dec.close();
+			return tilesRead;
+		}catch (Exception ex) {
+			return null;
+		}
+	}
+	public ArrayList<Tile> read(String fname){
+		File f = new File(fname);
+		return read(f);
+	}
+	/**
+	 * This reads the the file you picked 
+	 * that ends in either TXT, BIN, XML
+	 * @param f
+	 * @return
+	 */
+	public ArrayList<Tile> read(File f){
+		String fname = f.getName().toUpperCase();
+		if (fname.endsWith(".TXT")){
+			return readFromText(f);
+		}
+		if (fname.endsWith("bin")) {
+			return readFromBinary(f);
+		}
+		if (fname.endsWith(".XML")) {
+			return readFromXML(f);
+		}
+		return null;
 	}
 }

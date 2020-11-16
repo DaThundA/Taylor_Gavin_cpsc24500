@@ -18,7 +18,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+/**
+ * This gets everything started.
+ * @author gavin
+ *
+ */
 public class SlotMachineApp {
 	public static void main(String[] args) {
 		SlotMachineFrame slm = new SlotMachineFrame();

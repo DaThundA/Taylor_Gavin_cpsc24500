@@ -27,16 +27,14 @@ public class TileRead {
 			String line;
 			String[] parts;
 			Tile tile;
-			int color, shape, posX, posY;
+			int color, shape;
 			while (fsc.hasNextLine()) {
 				line = fsc.nextLine().trim();
 				if (line.length() > 0) {
 					parts = line.split(" ");
 					color = Integer.parseInt(parts[0]);
 					shape = Integer.parseInt(parts[1]);
-					posX = Integer.parseInt(parts[2]);
-					posY = Integer.parseInt(parts[3]);
-					tile = new Tile(shape, color, posX, posY);
+					tile = new Tile(shape, color);
 					result.add(tile);
 				}
 			}
@@ -98,16 +96,19 @@ public class TileRead {
 	 * @return
 	 */
 	public ArrayList<Tile> read(File f){
-		String fname = f.getName().toUpperCase();
-		if (fname.endsWith(".TXT")){
-			return readFromText(f);
+		try {
+			String fname = f.getName().toUpperCase();
+			if (fname.endsWith(".TXT")){
+				return readFromText(f);
+			}else if (fname.endsWith("bin")) {
+				return readFromBinary(f);
+			}else if (fname.endsWith(".XML")) {
+				return readFromXML(f);
+			}else {
+				return null;
 		}
-		if (fname.endsWith("bin")) {
-			return readFromBinary(f);
+		}catch (Exception ex) {
+			return null;
 		}
-		if (fname.endsWith(".XML")) {
-			return readFromXML(f);
-		}
-		return null;
 	}
 }

@@ -23,7 +23,7 @@ import javax.swing.JTextField;
  * @author gavin
  *
  */
-public class SlotMachineApp {
+public class SlotMachineApp {//This is what starts the whole game.
 	public static void main(String[] args) {
 		SlotMachineFrame slm = new SlotMachineFrame();
 		slm.setVisible(true);

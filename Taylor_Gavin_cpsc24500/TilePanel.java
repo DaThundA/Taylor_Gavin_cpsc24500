@@ -1,113 +1,69 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JPanel;
-import java.awt.Color;
-import javax.swing.JOptionPane;
 /**
- * This class is used to take the information from Tile.java and print it out 
- * on the panel.
+ * This class gives the get and set functions for the tiles,
+ * which included the color and shape of them as well
  * @author gavin
  *
  */
-public class TilePanel extends JPanel implements MouseListener, MouseMotionListener {
-	private String mouseStatus;
+public class TilePanel extends JPanel implements MouseListener {
 	private ArrayList<Tile> tiles;
+	private Random rnd;
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {//This here listens for when the mouse is clicked and then randomizes the tiles shape and color.
+		int whichTile = e.getX()/(this.getWidth()/4);
+		Tile tile = tiles.get(whichTile);
+		tile.setRandomly(rnd);
+		repaint();
+	}
 	public void clearTiles() {
 		tiles.clear();
 	}
-	public ArrayList<Tile> getTiles(){
+	public TilePanel() {
+		tiles = new ArrayList<Tile>();
+		Tile tile;
+		rnd = new Random();
+		for (int i = 0; i < 4; i++) {
+			tile = new Tile();
+			tile.setRandomly(rnd);
+			tiles.add(tile);
+		}
+		addMouseListener(this);
+	}
+	public ArrayList<Tile> getTiles() {
 		return tiles;
 	}
 	public void setTiles(ArrayList<Tile> tiles) {
 		this.tiles = tiles;
 	}
-	/**
-	 * This take are pre-set varibles for the tiles so there is something there when 
-	 * the game starts.
-	 */
-	public TilePanel() {
-		ArrayList<Tile> tiles = new ArrayList<Tile>();// I know you did want this here but it was the only way that the frame would even show up.
-		addMouseListener(this);//The error I got was the NullPointerExpetion still working on it.
-		addMouseMotionListener(this);
-		tiles.add(new Tile(0,0,10,10));
-		tiles.add(new Tile(1,1,220,10));
-		tiles.add(new Tile(0,1,430,10));
-		tiles.add(new Tile(0,1,640,10));
-	}
-	/**
-	 * In this it takes in the random varible that is made in Tile.java and assigns it a color
-	 * and a shape and the size.
-	 * @param g
-	 */
-	public void colorVar(Graphics g) {
+	public void paintComponent(Graphics g) {//This sets the color, shape, and location of the tiles.
 		super.paintComponent(g);
-		for(Tile tile: tiles) {
-			if(tile.getColor() == 0) {
-				g.setColor(Color.RED);
-				repaint();
-			}else if (tile.getColor() == 1) {
-				g.setColor(Color.ORANGE);
-				repaint();
-			}else if (tile.getColor() == 2) {
-				g.setColor(Color.YELLOW);
-				repaint();
-			}else if (tile.getColor() == 3) {
-				g.setColor(Color.GREEN);
-				repaint();
-			}else if (tile.getColor() == 4) {
-				g.setColor(Color.BLUE);
-				repaint();
-			}
-			if (tile.getShape() == 0) {
-				g.fillOval(tile.getPosX(), tile.getPosY(), 200, 200);
-				repaint();
-			}else if (tile.getShape() == 1) {
-				g.fillRect(tile.getPosX(), tile.getPosY(), 200, 200);
-				repaint();
-			}
+		int cellWidth = this.getWidth() / 4;
+		int tileSize = 4*cellWidth/5;
+		int shape;
+		Color color;
+		Tile tile;
+		for (int i = 0; i < tiles.size(); i++) {
+		tile = tiles.get(i);
+		shape = tile.getShape();
+		color = tile.getRealColor();
+		g.setColor(
+		color);
+		if (shape == 0) {
+			g.fillOval(i*cellWidth + cellWidth/10, cellWidth/10, tileSize, tileSize);
+		} else if (shape == 1) {
+			g.fillRect(i*cellWidth + cellWidth/10, cellWidth/10, tileSize, tileSize);
 		}
 	}
-	
-	/**
-	 * All of these are things to do with the mouse 
-	 * this will work with clicking on the tile and changing the shape and color.
-	 * @return
-	 */
-	public String getMouseStatus() {
-		return mouseStatus;
-	}
-	public void setMouseStaus(String ms) {
-		mouseStatus = ms;
-	}
-	public void mouseEntered(MouseEvent e) {
-		mouseStatus = "Mouse entered the panel";
-		repaint();
-	}
-	public void mouseExited(MouseEvent e) {
-		mouseStatus = "Mouse exited the panel";
-		repaint();
-	}
-	public void mouseClicked(MouseEvent e) {
-		mouseStatus = String.format("Mouse clicked at (%d, %d)", e.getX(), e.getY());// This will be used to change the tile color and tile shape
-		repaint();
-	}
-	public void mousePressed(MouseEvent e) {
-		mouseStatus = String.format("Mouse pressed at (%d, %d)", e.getX(), e.getY());
-		repaint();
-	}
-	public void mouseReleased(MouseEvent e) {
-		mouseStatus = String.format("Mouse released at (%d, %d)", e.getX(), e.getY());
-		repaint();
-	}
-	public void mouseMoved(MouseEvent e) {
-		mouseStatus = String.format("MOuse moved at (%d, %d)", e.getX(), e.getY());
-		repaint();
-	}
-	public void mouseDragged(MouseEvent e) {
-		mouseStatus = String.format("MOuse Dragging at (%d, %d)", e.getX(), e.getY());
-		repaint();
 	}
 }
+
+

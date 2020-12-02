@@ -1,10 +1,12 @@
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 
 public class TileWriter {
 	/**
@@ -83,17 +85,19 @@ public class TileWriter {
 	 * @return
 	 */
 	public boolean write(File f, ArrayList<Tile> tiles) {
-		String fname = f.getName().toUpperCase();
-		if (fname.endsWith(".TXT")) {
-			return writeToText(f, tiles);
+		try {
+			String fname = f.getName().toUpperCase();
+			if (fname.endsWith(".TXT")) {
+				return writeToText(f, tiles);
+			}else if (fname.endsWith(".BIN")) {
+				return writeToBinary(f, tiles);
+			}else if (fname.endsWith(".XML")) {
+				return writeToXML(f, tiles);
+			}else {
+				return false;
+			}
+		}catch(Exception ex) {
+			return false;
 		}
-		if (fname.endsWith(".BIN")) {
-			return writeToBinary(f, tiles);
-		}
-		if (fname.endsWith(".XML")) {
-			return writeToXML(f, tiles);
-		}
-		return false;
 	}
 }
-

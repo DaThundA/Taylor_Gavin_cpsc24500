@@ -19,8 +19,10 @@ import javax.swing.JTextField;
  * @author gavin
  *
  */
-public class SlotMachineFrame extends JFrame { 
+public class SlotMachineFrame extends JFrame { //This is declared here so that it is in every function in this class
 	private TilePanel slotFrame;
+	private JTextField txtBalance;
+	private JButton btnMax, btnMid, btnMin;
 	/** 
 	 * In this class the menu that you see at the top of the screen is made
 	 * with a save, load, exit, restart options are under the name file.
@@ -28,111 +30,100 @@ public class SlotMachineFrame extends JFrame {
 	 */
 	public void setupMenu() {
 		JMenuBar mBar = new JMenuBar();
-		JMenu mFile = new JMenu("File");
-		JMenuItem miSave = new JMenuItem("Save Tiles");
+		JMenu MuFile = new JMenu("File");
+		JMenuItem miLoad = new JMenuItem("load");
+		JMenuItem miSave = new JMenuItem("Save");
+		JMenuItem miPrint = new JMenuItem("Print");
+		JMenuItem miRestart = new JMenuItem("Restart");
+		JMenuItem miExit = new JMenuItem("Exit");
+		miLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfc = new JFileChooser();
+				TileRead tr = new TileRead();
+				ArrayList<Tile> tiles;
+				if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					tiles = tr.read(jfc.getSelectedFile());
+					if (tiles != null) {
+						slotFrame.setTiles(tiles);
+						repaint();
+					}else {
+						JOptionPane.showMessageDialog(null,  "Tiles could not be read.");
+					}
+				}
+			}
+		});
 		miSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc = new JFileChooser();
 				TileWriter tw = new TileWriter();
 				if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-					if (tw.write(jfc.getSelectedFile(), slotFrame.getTiles()));
-						JOptionPane.showMessageDialog(null, "Wrote tile to file." );
-				}else {
-					JOptionPane.showMessageDialog(null, "Could not write tiles to file.");
-				}
-			}
-		});
-		mFile.add(miSave);
-		JMenuItem miLoad = new JMenuItem("Load Tiles");
-		miLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser jfc = new JFileChooser();
-				TileRead tr = new TileRead();
-				if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					ArrayList<Tile> tilesRead = tr.readFromBinary(jfc.getSelectedFile());
-					if (tilesRead == null) {
-						JOptionPane.showMessageDialog(null, "Could not read tiles from file");;
+					if (tw.write(jfc.getSelectedFile(), slotFrame.getTiles())) {
+						JOptionPane.showMessageDialog(null,"Wrote tiles successfully");
 					}else {
-						slotFrame.setTiles(tilesRead);
-						repaint();
+						JOptionPane.showMessageDialog(null, "Could not write tiles");
 					}
 				}
 			}
 		});
-		mFile.add(miLoad);
-		JMenuItem miRestart = new JMenuItem("Restart");
-		miRestart.addActionListener(new ActionListener() {
+		miExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				slotFrame.setMouseStaus("");
+				System.exit(0);
+			}
+		});
+		MuFile.add(miLoad);
+		MuFile.add(miSave);
+		MuFile.add(miExit);
+		miRestart.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
 				slotFrame.clearTiles();
 				repaint();
 			}
 		});
-		JMenuItem miExit = new JMenuItem("Exit");
-		miExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e ) {
-				System.exit(0);
-			}
-		});
-		mFile.add(miRestart);
-		mFile.add(miExit);
-		mBar.add(mFile);
-		JMenu mHelp = new JMenu("Help");
+		MuFile.add(miPrint);
+		MuFile.add(miRestart);
+		mBar.add(MuFile);
+		JMenu MuHelp = new JMenu("Help");
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,"https://github.com/DaThundA/Taylor_Gavin_cpsc24500");
+				JOptionPane.showMessageDialog(null, "Vaga Baby Vegas by Gavin Taylor <address>");
 			}
 		});
-		mHelp.add(miAbout);
-		mBar.add(mHelp);
+		MuHelp.add(miAbout);
+		mBar.add(MuHelp);
 		setJMenuBar(mBar);
+		
 	}
-	/**
-	 * This sets the look of the panel: the size the name and the buttons that are at the bottom
-	 */
-	public void setupLook() {
-		setTitle("Vagas Baby");
-		setBounds(100, 100, 500, 500);
+	public void setupLook() {//This here sets up the look of the game and add the buttons that we made above
+		setTitle("Vagas Baby Slot Machine");
+		setBounds(100, 100, 750, 300);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		slotFrame = new TilePanel();
 		c.add(slotFrame, BorderLayout.CENTER);
 		JPanel panSouth = new JPanel();
 		panSouth.setLayout(new FlowLayout());
-		JButton btnMax = new JButton("Max");
-		btnMax.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You pressed the Max button");
-			}
-		});
+		btnMax = new JButton("Max");
+		btnMid = new JButton("Mid");
+		btnMin = new JButton("Min");
 		panSouth.add(btnMax);
-		JButton btnMid = new JButton("Mid");
-		btnMid.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You pressed the Mid button");
-			}
-		});
 		panSouth.add(btnMid);
-		JButton btnMin = new JButton("Min");
-		btnMin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You pressed the Min button");
-			}
-		});
 		panSouth.add(btnMin);
-		panSouth.add(new JLabel("$"));
-		JTextField txt$ = new JTextField(5);
-		panSouth.add(txt$);
-		c.add(panSouth, BorderLayout.SOUTH);
+		c.add(panSouth,BorderLayout.SOUTH);
+		slotFrame = new TilePanel();
+		c.add(slotFrame,BorderLayout.CENTER);
+		JLabel lbBalance = new JLabel("$");
+		panSouth.add(lbBalance);
+		txtBalance = new JTextField(6);
+		txtBalance.setEditable(false);
+		txtBalance.setText(String.format("%.2f", 5));
 		setupMenu();
 	}
 	/**
 	 * This calls the previouse class and tells it to close on exit.
 	 */
-	public SlotMachineFrame() {
+	public SlotMachineFrame() {//When this is called this makes the window.
 		setupLook();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 }
-

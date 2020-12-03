@@ -116,7 +116,7 @@ public class SlotMachineFrame extends JFrame { //This is declared here so that i
 		panSouth.add(lbBalance);
 		txtBalance = new JTextField(6);
 		txtBalance.setEditable(false);
-		txtBalance.setText(String.format("%.2f", 5));
+		txtBalance.setText(String.format("%.2f", 5.0));
 		setupMenu();
 	}
 	/**

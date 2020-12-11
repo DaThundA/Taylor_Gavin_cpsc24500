@@ -1,0 +1,59 @@
+public class Answers {
+/**
+ * 1. The relationship between a laptop and a screen can best be categorized as 
+ * B. Association
+ * 
+ * 2. Which one of these is not a purpose of information hiding in object-oriented programming?
+ * C. To protect peoples's information from hackers.
+ * 
+ * 3. The relationship between bayonet and weapon could best be  described as 
+ * A: Inheritance 
+ * 
+ * 4. Which of the following is not true of the relationship composition?
+ * C. It involves exclusive ownership, meaning that no other object could own the owned object.
+ * 
+ * 5. In the relationship between hammer and toll, which of the following is correct?
+ * B. Hammer is a subclass, and tool is a superclass.
+ * 
+ * 6. Which of the following is a false statement?
+ * D. Usually, only one object can be built for a given class
+ * 
+ * 7. Which of the following is false about an abstract class?
+ * C. You cannot have any non-abstract functions.
+ * 
+ * 8. Why is polymorphism powerful?
+ * A. It enables us to refer to related objects generally but still access specific functionality for each object
+ * 
+ * 9. Why do we write public get and set functions?
+ * C. In combination with making data private, these public functions give us a way to read and write
+ *    the values of these variables in a controlled way.
+ * 
+ * 10. Which of the following is a false statement?
+ *  B. In a UML class diagram, composition is shown using an empty diamond.
+ *  
+ * 11. One problem associated with software development is rigidity which means
+ *  B. It is difficult to change the code to meet changing or additional needs.
+ *  
+ * 12. Which pattern tries to make it easier to create a variety of related objects?
+ *  D. Delegation
+ *  
+ * 13. Which pattern tries to avoid mixing the storage of data and how it is displayed?
+ *  A. Model-View_Controller
+ *  
+ * 14. Which pattern often uses a private constructor and static functions as a part of its design?
+ *  C. Factory
+ *  
+ * 15. Which pattern often uses aggregation or composition to enable an owner to perform a task by asking for help
+ *     from things it owns?
+ *  C. Factory
+ *  
+ * 16. Which pattern is used particularly to ensure consistency across multiple threads?
+ *  B. Singleton
+ *  
+ * 17. Which concepts enable the factory pattern to be particularly useful?
+ *  C. Inheritance and Polymorphism
+ *  
+ * 18. Which of the following is a false statement?
+ *  B. A class can implement multiple interfaces but extends only one class
+ */
+}

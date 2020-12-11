@@ -1,0 +1,23 @@
+public class QuestionPrinter {
+	private int choice;
+	private String text;
+	private String anwser;
+	public int getChoice(){
+		return choice;
+	}
+	public void setChoice(int choice) {
+		this.choice = choice;
+	}
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public String getAnwser() {
+		return anwser;
+	}
+	public void setAnwser(String anwser) {
+		this.anwser = anwser;
+	}
+}
